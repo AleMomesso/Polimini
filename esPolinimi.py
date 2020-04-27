@@ -60,8 +60,8 @@ def rank(n):
     if n == 1: return monominoes
     return unique(concat_map(new_polys, rank(n - 1)))
 
-def text_representation(poly,n):
-     """Rappresentazione testuale"""
+def poly_matrix_builder(poly,n):
+     """Costruzione della matrice del polimino"""
     min_pt = minima(poly)
     max_pt = (max(p[0] for p in poly), max(p[1] for p in poly))
     table = [[ 0 for i in xrange(n) ] for j in xrange(n)]
@@ -85,15 +85,14 @@ def main():
     fig.patch.set_visible(False)
     plt.axis('off')
 
-    
     for poly in rank(n):              
-        s = text_representation(poly,n)  
+        s = poly_matrix_builder(poly,n)  
         fig.add_subplot(rows, columns, j)
         fig.patch.set_visible(False)
         plt.axis('off')
         plt.imshow(s)
         j+=1       
-   
+    #Stampa dei polimini
     plt.show()
  
 main()
