@@ -59,7 +59,17 @@ def rank(n):
     if n == 0: return []
     if n == 1: return monominoes
     return unique(concat_map(new_polys, rank(n - 1)))
-
+   
+def cli_debug(poly):
+    """polimini testuali per debug CLI"""
+    min_pt = minima(poly)
+    max_pt = (max(p[0] for p in poly), max(p[1] for p in poly))
+    table = [array('c', ' ') * (max_pt[1] - min_pt[1] + 1)
+             for _ in xrange(max_pt[0] - min_pt[0] + 1)]
+    for pt in poly:
+        table[pt[0] - min_pt[0]][pt[1] - min_pt[1]] = '#'
+    return "\n".join(row.tostring() for row in table)
+   
 def poly_matrix_builder(poly,n):
      """Costruzione della matrice del polimino"""
     min_pt = minima(poly)
@@ -85,7 +95,8 @@ def main():
     fig.patch.set_visible(False)
     plt.axis('off')
 
-    for poly in rank(n):              
+    for poly in rank(n):    
+        print cli_debug(poly), "\n"     
         s = poly_matrix_builder(poly,n)  
         fig.add_subplot(rows, columns, j)
         fig.patch.set_visible(False)
