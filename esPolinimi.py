@@ -11,7 +11,7 @@ def concat_map(func, it):
     return list(chain.from_iterable(imap(func, it)))
  
 def minima(poly):
-    """Finds the min x and y coordiate of a Polyomino."""
+    """trova le coordinate minime di un polimino"""
     return (min(pt[0] for pt in poly), min(pt[1] for pt in poly))
  
 def translate_to_origin(poly):
@@ -24,7 +24,7 @@ rotate270  = lambda (x, y): (-y,  x)
 reflect    = lambda (x, y): (-x,  y)
  
 def rotations_and_reflections(poly):
-    """All the plane symmetries of a rectangular region."""
+    """tutte le simmetrie"""
     return (poly,
             map(rotate90, poly),
             map(rotate180, poly),
@@ -41,11 +41,10 @@ def unique(lst):
     lst.sort()
     return map(next, imap(itemgetter(1), groupby(lst)))
  
-# All four points in Von Neumann neighborhood.
 contiguous = lambda (x, y): [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
  
 def new_points(poly):
-    """Finds all distinct points that can be added to a Polyomino."""
+    """Trova tutti i punti unici che possono essere aggiunti al polimino"""
     return unique([pt for pt in concat_map(contiguous, poly) if pt not in poly])
  
 def new_polys(poly):
@@ -55,37 +54,25 @@ monomino = [(0, 0)]
 monominoes = [monomino]
  
 def rank(n):
-    """Generates polyominoes of rank n recursively."""
+    """Genera in maniera ricorsiva polimini di categoria N"""
     assert n >= 0
     if n == 0: return []
     if n == 1: return monominoes
     return unique(concat_map(new_polys, rank(n - 1)))
- 
-def text_representation(poly):
-    """Generates a textual representation of a Polyomino."""
-    min_pt = minima(poly)
-    max_pt = (max(p[0] for p in poly), max(p[1] for p in poly))
-    table = [array('c', ' ') * (max_pt[1] - min_pt[1] + 1)
-             for _ in xrange(max_pt[0] - min_pt[0] + 1)]
-    for pt in poly:
-        table[pt[0] - min_pt[0]][pt[1] - min_pt[1]] = '#'
-    return "\n".join(row.tostring() for row in table)
 
-def text_representation_sas(poly,n):
-    """Generates a textual representation of a Polyomino."""
+def text_representation(poly,n):
+     """Rappresentazione testuale"""
     min_pt = minima(poly)
     max_pt = (max(p[0] for p in poly), max(p[1] for p in poly))
-    #table = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
-    table = [[ 0 for i in range(n) ] for j in range(n)]
+    table = [[ 0 for i in xrange(n) ] for j in xrange(n)]
     for pt in poly:
         table[pt[0] - min_pt[0]][pt[1] - min_pt[1]] = 1
     return table
  
 def main():
     
-    n=input("inserisci n zio: ")
+    n=input("Inserisci N: ")
     print ["Totale numeri polinomi:" ,len(rank(n))]
-    print "\nAll free polyominoes of rank %d:" % n    
     
     j=1
 
@@ -98,9 +85,9 @@ def main():
     fig.patch.set_visible(False)
     plt.axis('off')
 
-    for poly in rank(n):
-        print text_representation(poly), "\n"               
-        s = text_representation_sas(poly,n)  
+    
+    for poly in rank(n):              
+        s = text_representation(poly,n)  
         fig.add_subplot(rows, columns, j)
         fig.patch.set_visible(False)
         plt.axis('off')
