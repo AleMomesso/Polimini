@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 import time
+import random
 
  
 def concat_map(func, it):
@@ -73,11 +74,12 @@ def cli_debug(poly):
    
 def poly_matrix_builder(poly,n):
     """Costruzione della matrice del polimino"""
+    colore = random.randint(1, 6)
     min_pt = minima(poly)
     max_pt = (max(p[0] for p in poly), max(p[1] for p in poly))
     table = [[ 0 for i in xrange(n) ] for j in xrange(n)]
     for pt in poly:
-        table[pt[0] - min_pt[0]][pt[1] - min_pt[1]] = 1
+        table[pt[0] - min_pt[0]][pt[1] - min_pt[1]] = colore
     return table
  
 def main():
@@ -94,6 +96,7 @@ def main():
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
     fig=plt.figure(figsize=(8, 8))              #imposto la dimensione di ogni polimino generato
+    fig.canvas.set_window_title('Polimini')     #imposto titolo al foglio grafico
     columns = 5                                 #voglio disegnare 5 polimini per riga
     rows = (conta_polimini/columns)+1           #calcolo dinamico per ottenere il numero di righe necessarie per ospitare tutti i vari polimini
     fig.suptitle('Tutti i polimini con: ' + str(n) + ' quadrati' + ' (' + str(conta_polimini)+')')      #imposto titolo al foglio grafico
