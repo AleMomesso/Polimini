@@ -4,9 +4,8 @@ from sys import argv
 from array import array
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import numpy as np
-import time
 import random
+import time
 
  
 def concat_map(func, it):
@@ -85,6 +84,7 @@ def poly_matrix_builder(poly,n):
 def main():
     
     n=input("Inserisci N quadrati: ")           #lettura input di n quadrati
+    start = time.time()
     lista_polimini = rank(n)                    #genero i vari polimini univoci
     conta_polimini = len(rank(n))               #conto il totale dei polimini univoci
     print ["Totale numeri polimini:" ,conta_polimini]
@@ -97,6 +97,8 @@ def main():
 
     fig=plt.figure(figsize=(8, 8))              #imposto la dimensione di ogni polimino generato
     fig.canvas.set_window_title('Polimini')     #imposto titolo al foglio grafico
+    thismanager = plt.get_current_fig_manager()
+    thismanager.window.wm_iconbitmap("icon.ico")
     columns = 5                                 #voglio disegnare 5 polimini per riga
     rows = (conta_polimini/columns)+1           #calcolo dinamico per ottenere il numero di righe necessarie per ospitare tutti i vari polimini
     fig.suptitle('Tutti i polimini con: ' + str(n) + ' quadrati' + ' (' + str(conta_polimini)+')')      #imposto titolo al foglio grafico
@@ -113,5 +115,7 @@ def main():
         j+=1       
     #Stampa dei polimini
     plt.show()                                  #stampo il foglio grafico generato
+    end=time.time()
+    print "Tempo totale: " + str(end-start)
  
 main()
